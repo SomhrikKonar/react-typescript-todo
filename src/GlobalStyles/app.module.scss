@@ -1,0 +1,26 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    background: var(--primary-blue);
+    padding: 50px;
+    min-height: calc(100vh - 100px);
+    align-items: center;
+    h1{
+        margin-top: 0px;
+        margin-bottom: 50px;
+        font-family: 'Neucha', cursive;
+        text-align: center;
+    }
+    .todo__list__container{
+        margin-top: 40px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        position: relative;
+    }
+}
+@media screen and (max-width:650px){
+    .container{
+        padding: 50px 20px;
+    }
+}

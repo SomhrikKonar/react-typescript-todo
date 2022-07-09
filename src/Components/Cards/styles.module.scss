@@ -1,0 +1,43 @@
+.cardContainer{
+    display: flex;
+    height: 60px;
+    border-radius: 8px;
+    background: linear-gradient(to right,#d2dae0,#e2ebf0);
+    align-items: center;
+    padding: 0 10px;
+    margin: 10px;
+    width: 250px;
+    cursor: grab;
+    input{
+        flex: 1;
+        border: 0;
+        outline: 0;
+        background-color: transparent;
+        font-family: "Neucha", cursive;
+        font-weight: 600;
+        font-size: 18px;
+    }
+    .completedTaskTitle{
+        text-decoration: line-through;
+    }
+    .optionContainer{
+        img{
+            margin-inline: 8px;
+            height: 20px;
+            width: 20px;
+            cursor: pointer;
+            transition: transform 200ms ease-in;
+        }
+        img:hover{
+            transform: scale(1.2);
+        }
+    }
+    .optionContainer:last-child img{
+        margin-right: 0;
+    }
+}
+@media screen and (max-width:650px) {
+    .cardContainer{
+        width: 80%;
+    }
+}
