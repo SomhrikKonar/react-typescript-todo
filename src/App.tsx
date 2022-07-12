@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "./Components/Cards/Card";
 import InputField from "./Components/InputFIeld/InputField";
 import styles from "./GlobalStyles/app.module.scss";
@@ -12,6 +12,7 @@ const App: React.FC = () => {
     { title: string; completed: boolean; id: number }[]
   >([]);
   const [draggedElement, setDraggedElement] = useState<number>();
+  const [lastDropId, setLastDropId] = useState<number>(0);
 
   const updateTodoList = (
     action: string,
@@ -67,6 +68,52 @@ const App: React.FC = () => {
         arr[dropId] = todoList[dragId];
         setTodoList([...arr]);
         break;
+      case "updateCardPosition":
+        if (
+          dragId === undefined ||
+          dropId === undefined ||
+          dropId === lastDropId ||
+          draggedElement === undefined
+        )
+          return;
+        let newArr: { title: string; completed: boolean; id: number }[] = [];
+
+        for (let i = 0; i < todoList.length; i++) {
+          if (todoList[i].title !== "") {
+            newArr.push(todoList[i]);
+          }
+        }
+        newArr.splice(dropId < draggedElement ? dropId : dropId + 1, 0, {
+          title: "",
+          completed: false,
+          id: 9999,
+        });
+        // console.log(newArr, dropId, draggedElement);
+        setLastDropId(dropId);
+        setTodoList([...newArr]);
+        break;
+      case "removeEmptyCard":
+        if (draggedElement === undefined) return;
+        let newArr1: { id: number; title: string; completed: boolean }[] = [];
+        let existingCards: {
+          [key: string]: { id: number; title: string; completed: boolean };
+        } = {};
+        todoList.map(
+          (el) =>
+            (existingCards = { ...existingCards, [" " + el.id]: { ...el } })
+        );
+
+        if (!existingCards[" 9999"]) newArr1 = [...todoList];
+        else
+          Object.entries(existingCards).map(([k, v]) => {
+            if (k.trim() === "9999")
+              newArr1.push(existingCards[" " + draggedElement]);
+            else if (k.trim() !== draggedElement.toString()) newArr1.push(v);
+          });
+        setTodoList(newArr1);
+        setTodoListCopy(newArr1);
+        setDraggedElement(undefined);
+        break;
       default:
         break;
     }
@@ -89,7 +136,7 @@ const App: React.FC = () => {
             updateTodoList={updateTodoList}
             setDraggedElement={setDraggedElement}
             draggedElement={draggedElement}
-            index={index}
+            numberOfCards={todoListCopy.length}
           />
         ))}
       </div>
