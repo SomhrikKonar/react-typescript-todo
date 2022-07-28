@@ -87,8 +87,6 @@ function Card({
 
       let eleIndex = newColumn - 1 + (newRow - 1) * noOfColumn;
 
-      console.log(newColumn, newRow);
-
       updateTodoList(
         "updateCardPosition",
         undefined,

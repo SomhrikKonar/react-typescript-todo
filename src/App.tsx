@@ -13,6 +13,7 @@ const App: React.FC = () => {
   >([]);
   const [draggedElement, setDraggedElement] = useState<number>();
   const [lastDropId, setLastDropId] = useState<number>(0);
+  const [togler, setTogler] = useState<boolean>(false);
 
   const updateTodoList = (
     action: string,
@@ -83,14 +84,25 @@ const App: React.FC = () => {
             newArr.push(todoList[i]);
           }
         }
-        newArr.splice(dropId < draggedElement ? dropId : dropId + 1, 0, {
+
+        let dropIn;
+
+        if (dropId === todoListCopy.length - 1) {
+          dropIn = newArr.length;
+        } else if (dropId === 0) {
+          dropIn = 0;
+        } else {
+          dropIn = dropId;
+        }
+
+        newArr.splice(dropIn, 0, {
           title: "",
           completed: false,
           id: 9999,
         });
-        // console.log(newArr, dropId, draggedElement);
         setLastDropId(dropId);
-        setTodoList([...newArr]);
+        setTodoList(newArr);
+        setTogler(!togler);
         break;
       case "removeEmptyCard":
         if (draggedElement === undefined) return;
